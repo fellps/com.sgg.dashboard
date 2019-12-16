@@ -36,6 +36,7 @@ import InputSlider from '../../components/inputs/slider'
 import InputGender from '../../components/inputs/gender'
 import InputPositions from '../../components/inputs/positionsSelector'
 import SwitchInput from '../../components/inputs/switch'
+import InputTag from '../../components/inputs/tags'
 
 import Form from 'react-nonconformist'
 
@@ -85,10 +86,11 @@ export default function JobSave ({ history, match }) {
     getAvailableUsers({
       MinAge: job.Age ? job.Age[0] : 18,
       MaxAge: job.Age ? job.Age[1] : 100,
-      Sex: job.Sex ? job.Sex : '',
-      Position: job.Position ? job.Position : ''
+      Sex: job.Sex || '',
+      Position: job.Position || '',
+      Tags: JSON.stringify(job.Tags || [])
     })
-  }, [job.Age, job.Sex, job.Position])
+  }, [job.Age, job.Sex, job.Position, job.Tags])
 
   const submit = async () => {
     await save({
@@ -97,15 +99,15 @@ export default function JobSave ({ history, match }) {
       Name: job.Name,
       Vacancies: job.Vacancies,
       ExtraVacancies: job.ExtraVacancies,
-      Position: job.Position ? job.Position : '',
+      Position: job.Position || '',
       MinAge: job.Age ? job.Age[0] : 18,
       MaxAge: job.Age ? job.Age[1] : 100,
-      Sex: job.Sex ? job.Sex : '',
+      Sex: job.Sex || '',
       Description: job.Description,
       StartAt: moment.utc(job.StartAt + ' ' + job.StartTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       EndAt: moment.utc(job.EndAt + ' ' + job.EndTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       Image: job.Image,
-      IsEnabled: job.IsEnabled !== void (0) ? job.IsEnabled : 1
+      IsEnabled: job.IsEnabled || 1
     })
 
     history.push(`/events/jobs/${match.params.idEvent}`)
@@ -174,13 +176,18 @@ export default function JobSave ({ history, match }) {
                       }
                     </Col>
                     <Col sm={12} md={6}>
-                      <InputPositions {...connect('Position')} label='Cargo' />
+                      <InputTag {...connect('Tags')} label='Tags' />
                     </Col>
                   </Row>
                   <Row>
                     <Col sm={12} md={6}>
                       <InputGender {...connect('Sex')} label='Sexo' />
                     </Col>
+                    <Col sm={12} md={6}>
+                      <InputPositions {...connect('Position')} label='Cargo' />
+                    </Col>
+                  </Row>
+                  <Row>
                     <Col sm={12} md={6}>
                       <label className='form-label'>Total de pessoas compatíveis</label>
                       <div>

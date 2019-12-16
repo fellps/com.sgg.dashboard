@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 
 import Dashboard from '../dashboard'
 
@@ -15,6 +15,9 @@ import SelectInput from '../../components/inputs/select'
 import InputAddress from '../../components/inputs/address'
 import SwitchInput from '../../components/inputs/switch'
 import TagsInput from '../../components/inputs/tags'
+
+import Gallery from 'react-photo-gallery'
+import Carousel, { Modal, ModalGateway } from 'react-images'
 
 import {
   Row,
@@ -52,6 +55,19 @@ function useStateAndDispatch () {
 }
 
 export default function UserView ({ history, match }) {
+  const [currentImage, setCurrentImage] = useState(0)
+  const [viewerIsOpen, setViewerIsOpen] = useState(false)
+
+  const openLightbox = useCallback((event, { photo, index }) => {
+    setCurrentImage(index)
+    setViewerIsOpen(true)
+  }, [])
+
+  const closeLightbox = () => {
+    setCurrentImage(0)
+    setViewerIsOpen(false)
+  }
+
   const {
     user,
     userStatus,
@@ -74,6 +90,34 @@ export default function UserView ({ history, match }) {
     await save(user)
     history.push('/users')
   }
+
+  const photos = [
+    {
+      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
+      width: 2,
+      height: 1
+    },
+    {
+      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
+      width: 2,
+      height: 1
+    },
+    {
+      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
+      width: 2,
+      height: 1
+    },
+    {
+      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
+      width: 2,
+      height: 1
+    },
+    {
+      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
+      width: 2,
+      height: 1
+    }
+  ]
 
   return (
     <Dashboard
@@ -126,7 +170,25 @@ export default function UserView ({ history, match }) {
                   <PhoneInput {...connect('PhoneNumber')} />
                   <TextInput {...connect('Instagram')} label='Instagram' required />
                   <InputAddress {...connect('Address')} />
+                  <h3>Documentos</h3>
                   <hr />
+                  <div>
+                    <Gallery photos={photos} onClick={openLightbox} direction='column' columns={3} />
+                    <ModalGateway>
+                      {viewerIsOpen ? (
+                        <Modal onClose={closeLightbox}>
+                          <Carousel
+                            currentIndex={currentImage}
+                            views={photos.map(x => ({
+                              ...x,
+                              srcset: x.srcSet,
+                              caption: x.title
+                            }))}
+                          />
+                        </Modal>
+                      ) : null}
+                    </ModalGateway>
+                  </div>
                   <div style={{ textAlign: 'right' }}>
                     <Button type='submit'>Salvar</Button>
                   </div>

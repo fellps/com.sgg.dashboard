@@ -23,9 +23,10 @@ class TagsComponent extends React.Component {
     this.handleAddition = this.handleAddition.bind(this)
   }
 
-  handleDelete (i) {
+  handleDelete (i, onChangeText) {
     const tags = this.state.tags.slice(0)
     tags.splice(i, 1)
+    onChangeText(tags)
     this.setState({ tags })
   }
 
@@ -48,7 +49,7 @@ class TagsComponent extends React.Component {
         <ReactTags
           tags={this.state.tags}
           suggestions={this.state.suggestions}
-          handleDelete={this.handleDelete}
+          handleDelete={(i) => this.handleDelete(i, onChangeText)}
           handleAddition={(tag) => this.handleAddition(tag, onChangeText)}
           minQueryLength={1}
           placeholder={'Adicionar nova tag'} />
