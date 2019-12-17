@@ -77,20 +77,20 @@ export default function JobSave ({ history, match }) {
   const screenType = match.path === '/events/jobs/:idEvent/edit/:idJob' ? 'edit' : 'view'
 
   useMount(() => {
-    if (match.path === '/events/jobs/:idEvent/edit/:idJob') {
+    if (screenType === 'edit') {
       getOne({ idEvent: match.params.idEvent, idJob: match.params.idJob })
     }
   })
 
   useEffect(() => {
     getAvailableUsers({
-      MinAge: job.Age ? job.Age[0] : 18,
-      MaxAge: job.Age ? job.Age[1] : 100,
+      MinAge: job.Age ? job.Age[0] : job.MinAge || 18,
+      MaxAge: job.Age ? job.Age[1] : job.MaxAge || 100,
       Sex: job.Sex || '',
-      Position: job.Position || '',
+      IdPosition: job.IdPosition || '',
       Tags: JSON.stringify(job.Tags || [])
     })
-  }, [job.Age, job.Sex, job.Position, job.Tags])
+  }, [job.Age, job.Sex, job.IdPosition, job.Tags])
 
   const submit = async () => {
     await save({
@@ -99,10 +99,11 @@ export default function JobSave ({ history, match }) {
       Name: job.Name,
       Vacancies: job.Vacancies,
       ExtraVacancies: job.ExtraVacancies,
-      Position: job.Position || '',
+      IdPosition: job.IdPosition || '',
       MinAge: job.Age ? job.Age[0] : 18,
       MaxAge: job.Age ? job.Age[1] : 100,
       Sex: job.Sex || '',
+      Tags: JSON.stringify(job.Tags || []),
       Description: job.Description,
       StartAt: moment.utc(job.StartAt + ' ' + job.StartTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       EndAt: moment.utc(job.EndAt + ' ' + job.EndTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
@@ -184,7 +185,7 @@ export default function JobSave ({ history, match }) {
                       <InputGender {...connect('Sex')} label='Sexo' />
                     </Col>
                     <Col sm={12} md={6}>
-                      <InputPositions {...connect('Position')} label='Cargo' />
+                      <InputPositions {...connect('IdPosition')} label='Cargo' />
                     </Col>
                   </Row>
                   <Row>

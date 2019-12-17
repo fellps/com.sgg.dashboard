@@ -91,34 +91,6 @@ export default function UserView ({ history, match }) {
     history.push('/users')
   }
 
-  const photos = [
-    {
-      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
-      width: 2,
-      height: 1
-    },
-    {
-      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
-      width: 2,
-      height: 1
-    },
-    {
-      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
-      width: 2,
-      height: 1
-    },
-    {
-      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
-      width: 2,
-      height: 1
-    },
-    {
-      src: 'https://media.metrolatam.com/2019/08/19/novorg-dff164056ee6ebf0f22f958c137ca81e-1200x600.jpg',
-      width: 2,
-      height: 1
-    }
-  ]
-
   return (
     <Dashboard
       title='Ver Usuário'
@@ -172,23 +144,25 @@ export default function UserView ({ history, match }) {
                   <InputAddress {...connect('Address')} />
                   <h3>Documentos</h3>
                   <hr />
-                  <div>
-                    <Gallery photos={photos} onClick={openLightbox} direction='column' columns={3} />
-                    <ModalGateway>
-                      {viewerIsOpen ? (
-                        <Modal onClose={closeLightbox}>
-                          <Carousel
-                            currentIndex={currentImage}
-                            views={photos.map(x => ({
-                              ...x,
-                              srcset: x.srcSet,
-                              caption: x.title
-                            }))}
-                          />
-                        </Modal>
-                      ) : null}
-                    </ModalGateway>
-                  </div>
+                  {user.Documents.length > 0 &&
+                    <div>
+                      <Gallery photos={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 }))} onClick={openLightbox} direction='column' columns={3} />
+                      <ModalGateway>
+                        {viewerIsOpen ? (
+                          <Modal onClose={closeLightbox}>
+                            <Carousel
+                              currentIndex={currentImage}
+                              views={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 })).map(x => ({
+                                ...x,
+                                srcset: x.srcSet,
+                                caption: x.title
+                              }))}
+                            />
+                          </Modal>
+                        ) : null}
+                      </ModalGateway>
+                    </div>
+                  }
                   <div style={{ textAlign: 'right' }}>
                     <Button type='submit'>Salvar</Button>
                   </div>

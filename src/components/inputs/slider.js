@@ -6,13 +6,21 @@ const createSliderWithTooltip = Slider.createSliderWithTooltip
 const Range = createSliderWithTooltip(Slider.Range)
 
 class SliderComponent extends React.Component {
-  state = {
-    range: []
+  constructor (props) {
+    super(props)
+
+    this.state = {
+      range: []
+    }
   }
 
   handleChange = (range, onChangeText) => {
     onChangeText(range)
     this.setState({ range })
+  }
+
+  componentWillReceiveProps ({ value, onChangeText }) {
+    this.setState({ range: value || [] })
   }
 
   render () {

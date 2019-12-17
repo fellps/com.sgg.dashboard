@@ -8,7 +8,7 @@ export default createInput({
     label: 'Sexo',
     ...props,
     options: [
-      { name: '' },
+      { name: 'Todos', value: '' },
       { name: 'Masculino', value: 'm' },
       { name: 'Feminino', value: 'f' }
     ]

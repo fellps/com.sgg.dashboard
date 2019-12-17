@@ -14,7 +14,9 @@ const initialState = {
     data: { items: [] }
   },
 
-  user: {},
+  user: {
+    Documents: []
+  },
 
   userStatus: [],
 

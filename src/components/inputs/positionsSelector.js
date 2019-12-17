@@ -8,8 +8,13 @@ import { validateValueOrRequired } from './text'
 const loadOptions = async () => {
   const { data } = await get()
 
-  return data.data.items.map(d => ({
-    value: d.IdJob,
+  data.data.push({
+    IdPosition: '',
+    Name: 'Todos'
+  })
+
+  return data.data.map(d => ({
+    value: d.IdPosition,
     name: d.Name
   }))
 }
