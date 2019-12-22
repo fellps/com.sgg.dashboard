@@ -23,6 +23,7 @@ const columns = [
   { dataIndex: 'Name', key: 'Name', title: 'Nome' },
   { dataIndex: 'StartAt', key: 'StartAt', title: 'Início' },
   { dataIndex: 'EndAt', key: 'EndAt', title: 'Fim' },
+{ dataIndex: 'Amount', key: 'Amount', title: 'Diária', render: (history, { Amount }) => (<span>R$ {Amount.toFixed(2)}</span>) },
   { dataIndex: 'IsEnabled', key: 'IsEnabled', title: 'Status' },
   {
     dataIndex: 'actions',

@@ -19,7 +19,7 @@ class SliderComponent extends React.Component {
     this.setState({ range })
   }
 
-  componentWillReceiveProps ({ value, onChangeText }) {
+  componentWillReceiveProps ({ value }) {
     this.setState({ range: value || [] })
   }
 

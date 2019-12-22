@@ -146,3 +146,51 @@ tfoot {
   opacity: 0.5;
   cursor: auto;
 }
+
+.react-tabs__tab-list {
+  margin: 0 0 40px !important;
+}
+
+.rt-resizable-header-content {
+  text-align: left !important;
+  padding-right: 1.5rem;
+  padding-top: 2px;
+  padding-bottom: 10px;
+}
+
+.rt-th {
+  border: none !important;
+  padding-top: 12px;
+}
+
+.rt-th.rt-resizable-header {
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+  padding-left: 1px;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #e9ecef;
+  font-weight: 600;
+}
+
+.rt-thead {
+  box-shadow: none !important;
+  padding-left: 1rem;
+  padding-top: 10px;
+}
+
+.rt-tbody {
+  border: 1px solid rgba(0,0,0,0.05);
+}
+
+.rt-tr-group {
+  padding: 1rem;
+  font-size: 0.8125rem;
+  white-space: nowrap;
+}
+
+.paymentSummary {
+  padding: 40px 40px 22px 40px;
+  text-align: center;
+}

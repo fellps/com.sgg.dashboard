@@ -18,6 +18,7 @@ import './style/custom.css'
 import './style/ticket.scss'
 import '@kenshooui/react-multi-select/dist/style.css'
 import 'rc-slider/assets/index.css'
+import 'react-tabs/style/react-tabs.css'
 // END IMPORT STYLES FROM THEME
 
 import store from './state/store'

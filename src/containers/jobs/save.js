@@ -37,6 +37,7 @@ import InputGender from '../../components/inputs/gender'
 import InputPositions from '../../components/inputs/positionsSelector'
 import SwitchInput from '../../components/inputs/switch'
 import InputTag from '../../components/inputs/tags'
+import InputCurrency from '../../components/inputs/currency'
 
 import Form from 'react-nonconformist'
 
@@ -96,6 +97,7 @@ export default function JobSave ({ history, match }) {
     await save({
       IdEvent: job.IdEvent || match.params.idEvent,
       IdJob: job.IdJob,
+      Amount: job.Amount,
       Name: job.Name,
       Vacancies: job.Vacancies,
       ExtraVacancies: job.ExtraVacancies,
@@ -169,7 +171,17 @@ export default function JobSave ({ history, match }) {
                         required
                       />
                     </Col>
+                    <Col sm={12} md={12}>
+                      <InputCurrency
+                        {...connect(`Amount`)}
+                        label='Valor da diária'
+                        placeholder='Valor da diária'
+                        required
+                      />
+                    </Col>
                   </Row>
+                  <h4 style={{ paddingTop: 25 }}>Filtros da vaga</h4>
+                  <hr />
                   <Row>
                     <Col sm={12} md={6}>
                       {(job.MinAge || screenType === 'view') &&
@@ -188,8 +200,8 @@ export default function JobSave ({ history, match }) {
                       <InputPositions {...connect('IdPosition')} label='Cargo' />
                     </Col>
                   </Row>
-                  <Row>
-                    <Col sm={12} md={6}>
+                  <Row style={{ padding: 15 }}>
+                    <Col sm={12} md={12} style={{ borderStyle: 'dotted', borderWidth: 1, textAlign: 'center', paddingTop: 8 }}>
                       <label className='form-label'>Total de pessoas compatíveis</label>
                       <div>
                         <h1>{availableUsers.total}</h1>

@@ -11,8 +11,8 @@ const loadOptions = mem(async () => {
   const { data } = await get()
 
   return data.data.map(d => ({
-    value: d._id,
-    name: d.name
+    value: d.IdEvent,
+    name: d.Name
   }))
 })
 

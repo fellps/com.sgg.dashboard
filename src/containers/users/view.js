@@ -9,15 +9,19 @@ import Alert from '../../components/alert'
 import Form from 'react-nonconformist'
 
 import TextInput from '../../components/inputs/text'
+import NumericInput from '../../components/inputs/numeric'
 import PhoneInput from '../../components/inputs/phone'
 import CPFInput from '../../components/inputs/cpf'
 import SelectInput from '../../components/inputs/select'
 import InputAddress from '../../components/inputs/address'
 import SwitchInput from '../../components/inputs/switch'
 import TagsInput from '../../components/inputs/tags'
+import PositionsSelector from '../../components/inputs/positionsSelector'
+import Table from '../../components/table'
 
 import Gallery from 'react-photo-gallery'
 import Carousel, { Modal, ModalGateway } from 'react-images'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs'
 
 import {
   Row,
@@ -31,6 +35,32 @@ import useMount from '../../helpers/useMount'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { getOne, getUserStatus, clearUser, set, save } from './actions'
+
+const columns = [
+  {
+    dataIndex: 'EventName',
+    key: 'EventName',
+    title: 'Nome do evento'
+  },
+  {
+    dataIndex: 'JobName',
+    key: 'JobName',
+    title: 'Cargo'
+  },
+  {
+    dataIndex: 'Amount',
+    key: 'Amount',
+    title: 'Valor do pagamento',
+    render: (history, { Amount }) => (
+      <span>R$ {Amount.toFixed(2)}</span>
+    )
+  },
+  {
+    dataIndex: 'CreatedAt',
+    key: 'CreatedAt',
+    title: 'Data do pagamento'
+  }
+]
 
 function useStateAndDispatch () {
   const dispatch = useDispatch()
@@ -117,58 +147,82 @@ export default function UserView ({ history, match }) {
                 {JSON.stringify(response, null, 2)}
               </pre>
             </Alert>
-            <Form
-              values={user}
-              onChange={set}
-              onSubmit={submit}
-            >
-              {(connect, submit) => (
-                <form onSubmit={e => {
-                  e.preventDefault()
-                  submit()
-                }}>
-                  <SwitchInput {...connect('IsBlacklisted')} label='Blacklist' />
-                  <TagsInput {...connect('Tags')} label='Tags' />
-                  <SelectInput
-                    {...connect('Status')}
-                    label={'Status'}
-                    value={user.Status}
-                    options={userStatus}
-                    required
-                  />
-                  <TextInput {...connect('Name')} label='Nome Completo' required />
-                  <CPFInput {...connect('Document')} label='CPF' disabled required />
-                  <TextInput {...connect('Email')} label='Email' required />
-                  <PhoneInput {...connect('PhoneNumber')} />
-                  <TextInput {...connect('Instagram')} label='Instagram' required />
-                  <InputAddress {...connect('Address')} />
-                  <h3>Documentos</h3>
-                  <hr />
-                  {user.Documents.length > 0 &&
-                    <div>
-                      <Gallery photos={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 }))} onClick={openLightbox} direction='column' columns={3} />
-                      <ModalGateway>
-                        {viewerIsOpen ? (
-                          <Modal onClose={closeLightbox}>
-                            <Carousel
-                              currentIndex={currentImage}
-                              views={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 })).map(x => ({
-                                ...x,
-                                srcset: x.srcSet,
-                                caption: x.title
-                              }))}
-                            />
-                          </Modal>
-                        ) : null}
-                      </ModalGateway>
-                    </div>
-                  }
-                  <div style={{ textAlign: 'right' }}>
-                    <Button type='submit'>Salvar</Button>
+            <Tabs>
+              <TabList>
+                <Tab>Dados pessoais</Tab>
+                <Tab>Documentos</Tab>
+                <Tab>Histórico de Pagamentos</Tab>
+              </TabList>
+              <TabPanel>
+                <Form
+                  values={user}
+                  onChange={set}
+                  onSubmit={submit}
+                >
+                  {(connect, submit) => (
+                    <form onSubmit={e => {
+                      e.preventDefault()
+                      submit()
+                    }}>
+                      <SwitchInput {...connect('IsBlacklisted')} label='Blacklist' />
+                      <PositionsSelector {...connect('IdPosition')} label='Cargo' />
+                      <TagsInput {...connect('Tags')} label='Tags' />
+                      <NumericInput {...connect('Score')} label='Pontuação' />
+                      <SelectInput
+                        {...connect('Status')}
+                        label={'Status'}
+                        value={user.Status}
+                        options={userStatus}
+                        required
+                      />
+                      <TextInput {...connect('Name')} label='Nome Completo' required />
+                      <CPFInput {...connect('Document')} label='CPF' disabled required />
+                      <TextInput {...connect('Email')} label='Email' required />
+                      <PhoneInput {...connect('PhoneNumber')} />
+                      <TextInput {...connect('Instagram')} label='Instagram' required />
+                      <InputAddress {...connect('Address')} />
+                      <hr />
+                      <div style={{ textAlign: 'right' }}>
+                        <Button type='submit'>Salvar</Button>
+                      </div>
+                    </form>
+                  )}
+                </Form>
+              </TabPanel>
+              <TabPanel>
+                {user.Documents.length > 0
+                  ? <div>
+                    <Gallery photos={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 }))} onClick={openLightbox} direction='column' columns={3} />
+                    <ModalGateway>
+                      {viewerIsOpen ? (
+                        <Modal onClose={closeLightbox}>
+                          <Carousel
+                            currentIndex={currentImage}
+                            views={user.Documents.map(document => ({ src: document.Url, width: 1.75, height: 1 })).map(x => ({
+                              ...x,
+                              srcset: x.srcSet,
+                              caption: x.title
+                            }))}
+                          />
+                        </Modal>
+                      ) : null}
+                    </ModalGateway>
                   </div>
-                </form>
-              )}
-            </Form>
+                  : <p>Nenhum documento para exibir!</p>}
+              </TabPanel>
+              <TabPanel>
+                {user.Payments.length > 0
+                  ? <Table
+                    columns={columns}
+                    data={user.Payments.map(d => ({
+                      ...d,
+                      actions: history
+                    }))}
+                  />
+                  : <p>Nenhum pagamento para exibir!</p>
+                }
+              </TabPanel>
+            </Tabs>
           </Card>
         </Col>
       </Row>

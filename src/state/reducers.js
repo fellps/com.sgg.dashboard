@@ -12,6 +12,9 @@ import producers from '../containers/producers/reducer'
 import menus from '../containers/menus/reducer'
 import devices from '../containers/devices/reducer'
 import cashierClosing from '../containers/cashierClosing/reducer'
+import emails from '../containers/emails/reducer'
+import tags from '../containers/tags/reducer'
+import payments from '../containers/payments/reducer'
 
 import { reducer as isLoading } from '../helpers/reducerPromiseHelper'
 
@@ -28,5 +31,8 @@ export default combineReducers({
   menus,
   devices,
   cashierClosing,
+  emails,
+  tags,
+  payments,
   isLoading
 })

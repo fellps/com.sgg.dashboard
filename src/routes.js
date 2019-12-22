@@ -12,25 +12,17 @@ import EventsSave from './containers/events/save'
 import Jobs from './containers/jobs'
 import JobsSave from './containers/jobs/save'
 
-import Menus from './containers/menus'
-import SaveMenu from './containers/menus/save'
-
-import Producers from './containers/producers'
-import ProducersSave from './containers/producers/save'
-
-import Devices from './containers/devices'
-import DevicesSave from './containers/devices/save'
-
-// import BalanceEvent from './containers/balance'
-
 import Users from './containers/users'
 import UsersView from './containers/users/view'
 
-import SalesSummary from './containers/salesSummary'
+import Payments from './containers/payments'
+import PaymentsSave from './containers/payments/save'
 
-import OrdersDelivered from './containers/ordersDelivered'
+import Emails from './containers/emails'
+import EmailsSave from './containers/emails/save'
 
-import CashierClosing from './containers/cashierClosing'
+import Tags from './containers/tags'
+import TagsSave from './containers/tags/save'
 
 export const routes = [
   { path: '/', exact: true, menu: false, component: () => <Redirect to='/events' /> },
@@ -49,8 +41,14 @@ export const routes = [
   // { path: '/events/:uuid/pos', exact: true, component: Devices },
   // { path: '/events/:uuid/pos/create', exact: true, component: DevicesSave },
   // { path: '/events/:uuid/pos/:uuidDevice', exact: true, component: DevicesSave },
-  { path: '/users/:uuid', exact: true, component: UsersView },
   { path: '/users', name: 'Usuários', icon: 'circle-08 text-purple', exact: true, menu: true, component: Users },
+  { path: '/users/:uuid', exact: true, component: UsersView },
+  { path: '/payments', name: 'Efetuar Pagamentos', icon: 'money-coins text-green', exact: true, menu: true, component: Payments },
+  { path: '/payments/:idPayment', exact: true, component: PaymentsSave },
+  { path: '/emails', name: 'Emails', icon: 'email-83 text-blue', exact: true, menu: true, component: Emails },
+  { path: '/emails/:idEmail', exact: true, component: EmailsSave },
+  { path: '/tags', name: 'Tags', icon: 'key-25 text-red', exact: true, menu: true, component: Tags },
+  { path: '/tags/:idTag', exact: true, component: TagsSave },
   // { path: '/reports/sales-summary', name: 'Resumo de vendas', icon: 'chart-bar-32 text-green', exact: true, menu: true, component: SalesSummary },
   // { path: '/reports/summary-of-orders-delivered', name: 'Resumo de entregas', icon: 'delivery-fast text-red', exact: true, menu: true, component: OrdersDelivered },
   // { path: '/reports/cashier-closing', name: 'Fechamento de caixa', icon: 'money-coins text-orange', exact: true, menu: true, component: CashierClosing },
