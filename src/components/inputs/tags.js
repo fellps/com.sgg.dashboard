@@ -2,6 +2,8 @@ import React from 'react'
 import ReactTags from 'react-tag-autocomplete'
 import { createInput } from 'react-nonconformist'
 
+import { get } from '../../api/tags'
+
 class TagsComponent extends React.Component {
   constructor (props) {
     super(props)
@@ -36,8 +38,15 @@ class TagsComponent extends React.Component {
     this.setState({ tags })
   }
 
+  loadOptions = async () => {
+    const { data } = await get()
+    const suggestions = data.data.map(item => ({ id: item.IdTag, name: item.Name }))
+    this.setState({ suggestions })
+  }
+
   componentWillReceiveProps ({ value }) {
     this.setState({ tags: value || [] })
+    this.loadOptions()
   }
 
   render () {
