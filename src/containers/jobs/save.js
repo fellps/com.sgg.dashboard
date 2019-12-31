@@ -110,7 +110,7 @@ export default function JobSave ({ history, match }) {
       StartAt: moment.utc(job.StartAt + ' ' + job.StartTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       EndAt: moment.utc(job.EndAt + ' ' + job.EndTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       Image: job.Image,
-      IsEnabled: job.IsEnabled || 1
+      IsEnabled: job.IsEnabled !== void (0) ? job.IsEnabled : 1
     })
 
     history.push(`/events/jobs/${match.params.idEvent}`)
@@ -237,7 +237,7 @@ export default function JobSave ({ history, match }) {
                   <hr />
                   <Row>
                     <Col sm={12} md={4}>
-                      <InputUpload {...connect('Image')} label='Imagem da vaga (300x340px)' />
+                      <InputUpload {...connect('Image')} label='Imagem da vaga (670x450px)' />
                     </Col>
                   </Row>
                   <InputWysiwyg {...connect('Description')} label='Descrição' placeholder='Descrição' required />

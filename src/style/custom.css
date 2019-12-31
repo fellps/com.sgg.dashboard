@@ -194,3 +194,9 @@ tfoot {
   padding: 40px 40px 22px 40px;
   text-align: center;
 }
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  padding-top: 20px;
+}

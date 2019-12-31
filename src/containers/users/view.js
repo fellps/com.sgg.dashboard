@@ -18,6 +18,7 @@ import SwitchInput from '../../components/inputs/switch'
 import TagsInput from '../../components/inputs/tags'
 import PositionsSelector from '../../components/inputs/positionsSelector'
 import Table from '../../components/table'
+import InputWysiwyg from '../../components/inputs/wysiwyg'
 
 import Gallery from 'react-photo-gallery'
 import Carousel, { Modal, ModalGateway } from 'react-images'
@@ -181,6 +182,7 @@ export default function UserView ({ history, match }) {
                       <PhoneInput {...connect('PhoneNumber')} />
                       <TextInput {...connect('Instagram')} label='Instagram' required />
                       <InputAddress {...connect('Address')} />
+                      <InputWysiwyg {...connect('Description')} label='Descrição' placeholder='Descrição' required />
                       <hr />
                       <div style={{ textAlign: 'right' }}>
                         <Button type='submit'>Salvar</Button>

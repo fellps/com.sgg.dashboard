@@ -78,7 +78,8 @@ export default function EventSave ({ history, match }) {
       Description: event.Description,
       StartAt: moment.utc(event.StartAt + ' ' + event.StartTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
       EndAt: moment.utc(event.EndAt + ' ' + event.EndTime, 'DD/MM/YYYY HH:mm').format('YYYY-MM-DD HH:mm:ss'),
-      IsEnabled: event.IsEnabled ? event.IsEnabled : 1,
+      IsEnabled: event.IsEnabled !== void (0) ? event.IsEnabled : 1,
+      Address: event.Address,
       Image: event.Image
     })
 
@@ -146,7 +147,17 @@ export default function EventSave ({ history, match }) {
                   </Row>
                   <Row>
                     <Col sm={12} md={4}>
-                      <InputUpload {...connect('Image')} label='Imagem do evento (300x340px)' />
+                      <InputUpload {...connect('Image')} label='Imagem do evento (670x450px)' />
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col sm={12} md={12}>
+                      <InputText
+                        {...connect('Address')}
+                        label='Endereço do evento'
+                        placeholder='Endereço do evento'
+                        required
+                      />
                     </Col>
                   </Row>
                   <InputWysiwyg {...connect('Description')} label='Descrição' placeholder='Descrição' required />

@@ -7,7 +7,7 @@ import mem from 'mem'
 const paginate = mem(function pagination (c, m) {
   const current = c
   const last = m
-  const delta = 2
+  const delta = 1
   const left = current - delta
   const right = current + delta + 1
   const range = []
@@ -45,11 +45,6 @@ export default function Pagination ({
 
   const pagination = paginate(activePage, lastPage)
 
-  // console.log(itemsCountPerPage, totalItemsCount, lastPage, pagination)
-
-  pagination.pop()
-  pagination.shift()
-
   return (
     <PaginationRB>
       {activePage !== 1 && <PaginationRB.First onClick={() => onChange(1)} />}
@@ -67,10 +62,11 @@ export default function Pagination ({
           <PaginationRB.Item
             key={`item-${i}`}
             onClick={() => onChange(page)}
+            className={activePage - 1 === i && 'active'}
           >{page}</PaginationRB.Item>
         )
       })}
-      {activePage !== lastPage && <PaginationRB.Last onClick={() => onChange(1)} />}
+      {activePage !== lastPage && <PaginationRB.Last onClick={() => onChange(lastPage)} />}
     </PaginationRB>
   )
 }

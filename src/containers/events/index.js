@@ -18,6 +18,8 @@ import { get, clearEvent } from './actions'
 import Button from '../../components/button'
 import Table from '../../components/table'
 
+import qs from 'qs'
+
 const columns = [
   { dataIndex: 'Name', key: 'Name', title: 'Nome' },
   { dataIndex: 'StartAt', key: 'StartAt', title: 'Início' },
@@ -57,7 +59,7 @@ function useStateAndDispatch () {
   }
 }
 
-export default function Events ({ history }) {
+export default function Events ({ location, history }) {
   const {
     get,
     events,
@@ -72,6 +74,12 @@ export default function Events ({ history }) {
 
   const filter = params => {
     get(toParams(params))
+  }
+
+  const _updatePagination = (pagination) => {
+    const query = { ...qs.parse(location.search.replace('?', '')), _page: pagination }
+    history.push({ search: qs.stringify(query) })
+    get(toParams({ ...query }))
   }
 
   return (
@@ -103,10 +111,11 @@ export default function Events ({ history }) {
             actions: history
           }))}
           pagination={{
-            currentPage: events.data.current_page,
-            perPage: Number(events.data.per_page),
-            total: events.data.total
+            currentPage: events.page,
+            perPage: Number(events.pageSize),
+            total: events.totalRecords
           }}
+          onChange={(pagination) => _updatePagination(pagination)}
         />
       </Filters>
     </Dashboard>

@@ -21,6 +21,18 @@ export const getAvailableUsers = async ({ ...restData } = {}) => {
   })
 }
 
+export const sendPush = async ({ IdJob, ...restData }) => {
+  const { token } = loggedUser()
+
+  const formData = toFormData(restData)
+
+  return request.post(`/jobs/push/${IdJob}`, formData, {
+    headers: {
+      'x-access-token': token
+    }
+  })
+}
+
 export const save = async ({ IdEvent, IdJob, ...restData }) => {
   const { token } = loggedUser()
 

@@ -106,7 +106,6 @@ class Table2 extends Component {
       loading,
       className
     } = this.props
-
     return (
       <Dimmer active={loading} loader>
         <Table responsive className={className}>

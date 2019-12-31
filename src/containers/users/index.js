@@ -13,6 +13,8 @@ import { get } from './actions'
 import Button from '../../components/button'
 import Table from '../../components/table'
 
+import qs from 'qs'
+
 const columns = [
   {
     dataIndex: 'Name',
@@ -62,7 +64,7 @@ function useStateAndDispatch () {
   }
 }
 
-export default function Users ({ history }) {
+export default function Users ({ location, history }) {
   const { get, isLoading, users } = useStateAndDispatch()
   useMount(() => {
     get()
@@ -70,6 +72,12 @@ export default function Users ({ history }) {
 
   const filter = params => {
     get(toParams(params))
+  }
+
+  const _updatePagination = (pagination) => {
+    const query = { ...qs.parse(location.search.replace('?', '')), _page: pagination }
+    history.push({ search: qs.stringify(query) })
+    get(toParams({ ...query }))
   }
 
   return (
@@ -94,10 +102,11 @@ export default function Users ({ history }) {
             actions: history
           }))}
           pagination={{
-            currentPage: users.data.current_page,
-            perPage: Number(users.data.per_page),
-            total: users.data.total
+            currentPage: users.page,
+            perPage: Number(users.pageSize),
+            total: users.totalRecords
           }}
+          onChange={(pagination) => _updatePagination(pagination)}
         />
       </Filters>
     </Dashboard>

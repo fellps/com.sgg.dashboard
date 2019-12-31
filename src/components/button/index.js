@@ -8,13 +8,13 @@ import ReactLoading from 'react-loading'
 
 import classname from 'classname'
 
-export default function Button ({ children, to, isLoading, icon, className, variant='dark', ...restProps }) {
+export default function Button ({ children, to, isLoading, disabled, icon, className, variant='dark', ...restProps }) {
   return <ButtonRB
     {...restProps}
     variant={variant}
     {...(to && { as: Link, to })}
     className={`${className || ''} ${classname({ 'btn-icon': icon })}`}
-    disabled={isLoading}
+    disabled={isLoading || disabled}
   >
     {isLoading ? (
       <ReactLoading

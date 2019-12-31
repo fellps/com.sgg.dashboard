@@ -6,6 +6,7 @@ import {
   getOne,
   getAvailableUsers,
   save,
+  sendPush,
   clearJob
 } from './actions'
 
@@ -25,6 +26,8 @@ const initialState = {
   },
 
   availableUsers: 0,
+
+  push: {},
 
   response: { status: null }
 }
@@ -69,6 +72,14 @@ export default createReducer({
     ...state,
     job: {
       ...state.job,
+      ...payload.data.data
+    }
+  }),
+
+  [fulfilled(sendPush)]: (state, payload) => ({
+    ...state,
+    push: {
+      ...state.push,
       ...payload.data.data
     }
   }),

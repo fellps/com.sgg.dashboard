@@ -16,6 +16,8 @@ import Button from '../../components/button'
 import Table from '../../components/table'
 import TextInput from '../../components/inputs/text'
 
+import qs from 'qs'
+
 const columns = [
   {
     dataIndex: 'Name',
@@ -54,7 +56,7 @@ function useStateAndDispatch () {
   }
 }
 
-export default function Tags ({ history }) {
+export default function Tags ({ location, history }) {
   const { get, set, isLoading, tags, tag, clearTag } = useStateAndDispatch()
   const [showModal, setShowModal] = useState(false)
 
@@ -71,6 +73,12 @@ export default function Tags ({ history }) {
     clearTag()
     get()
     setShowModal(false)
+  }
+
+  const _updatePagination = (pagination) => {
+    const query = { ...qs.parse(location.search.replace('?', '')), _page: pagination }
+    history.push({ search: qs.stringify(query) })
+    get(toParams({ ...query }))
   }
 
   const handleClose = () => setShowModal(false)
@@ -104,10 +112,11 @@ export default function Tags ({ history }) {
             actions: history
           }))}
           pagination={{
-            currentPage: tags.data.current_page,
-            perPage: Number(tags.data.per_page),
-            total: tags.data.total
+            currentPage: tags.page,
+            perPage: Number(tags.pageSize),
+            total: tags.totalRecords
           }}
+          onChange={(pagination) => _updatePagination(pagination)}
         />
       </Filters>
       <Modal show={showModal} onHide={handleClose}>

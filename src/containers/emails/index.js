@@ -13,11 +13,22 @@ import { get } from './actions'
 import Button from '../../components/button'
 import Table from '../../components/table'
 
+import qs from 'qs'
+
 const columns = [
   {
     dataIndex: 'Name',
     key: 'Name',
     title: 'Tipo'
+  },
+  {
+    dataIndex: 'Content',
+    key: 'Content',
+    title: 'Descrição',
+    render: (history, { Content }) => {
+      const text = Content.length > 130 ? `${Content.substring(0, 130)}...` : Content
+      return text.replace(/(<([^>]+)>)/ig, ' ').replace('&nbsp', ' ').replace(';', '')
+    }
   },
   {
     dataIndex: 'actions',
@@ -47,7 +58,7 @@ function useStateAndDispatch () {
   }
 }
 
-export default function Emails ({ history }) {
+export default function Emails ({ location, history }) {
   const { get, isLoading, emails } = useStateAndDispatch()
   useMount(() => {
     get()
@@ -55,6 +66,12 @@ export default function Emails ({ history }) {
 
   const filter = params => {
     get(toParams(params))
+  }
+
+  const _updatePagination = (pagination) => {
+    const query = { ...qs.parse(location.search.replace('?', '')), _page: pagination }
+    history.push({ search: qs.stringify(query) })
+    get(toParams({ ...query }))
   }
 
   return (
@@ -77,10 +94,11 @@ export default function Emails ({ history }) {
             actions: history
           }))}
           pagination={{
-            currentPage: emails.data.current_page,
-            perPage: Number(emails.data.per_page),
-            total: emails.data.total
+            currentPage: emails.page,
+            perPage: Number(emails.pageSize),
+            total: emails.totalRecords
           }}
+          onChange={(pagination) => _updatePagination(pagination)}
         />
       </Filters>
     </Dashboard>
