@@ -94,7 +94,8 @@ export default function WhoWorked ({ location, history }) {
         onFilter={filter}
         filters={[
           { name: 'name', input: 'TextInput', label: 'Nome', placeholder: 'Nome do usuário' },
-          { name: 'cpf', input: 'CPF', label: 'CPF', placeholder: 'CPF do usuário' }
+          { name: 'cpf', input: 'CPF', label: 'CPF', placeholder: 'CPF do usuário' },
+          { name: 'month', input: 'Month', label: 'Mês', placeholder: 'Selecione o mês' }
         ]}
         title='Usuários'
         extras={<Button

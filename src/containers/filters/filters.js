@@ -7,6 +7,7 @@ import CNPJ from '../../components/inputs/cnpj'
 import CashierCPF from '../../components/inputs/cashierSelector'
 import UserStatus from '../../components/inputs/userStatusSelector'
 import PaymentStatus from '../../components/inputs/paymentStatusSelector'
+import Month from '../../components/inputs/monthSelector'
 
 export {
   CPF,
@@ -17,5 +18,6 @@ export {
   CNPJ,
   CashierCPF,
   UserStatus,
-  PaymentStatus
+  PaymentStatus,
+  Month
 }

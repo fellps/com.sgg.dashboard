@@ -56,7 +56,7 @@ export default createReducer({
   [fulfilled(getUserStatus)]: (state, payload) => ({
     ...state,
     response: payload.data,
-    userStatus: payload.data.data.map(d => ({ name: d.Name, value: d.Code, id: d.IdUserStatus }))
+    userStatus: payload.data.data.map(d => ({ name: d.Name, value: d.IdUserStatus, id: d.IdUserStatus }))
   }),
 
   [set]: (state, payload) => ({
