@@ -16,6 +16,8 @@
     "concurrently": "^4.1.2",
     "cpf_cnpj": "^0.2.0",
     "dot-object": "^1.9.0",
+    "file-saver": "^2.0.2",
+    "fs": "^0.0.1-security",
     "jodit": "^3.2.54",
     "js-cookie": "^2.2.0",
     "mem": "^5.1.1",
@@ -48,7 +50,8 @@
     "react-tag-autocomplete": "^5.11.2",
     "redux": "^4.0.4",
     "redux-act": "^1.7.7",
-    "redux-promise-middleware": "^6.1.1"
+    "redux-promise-middleware": "^6.1.1",
+    "xlsx": "^0.15.4"
   },
   "scripts": {
     "start": "concurrently \"yarn run start:scripts\"",

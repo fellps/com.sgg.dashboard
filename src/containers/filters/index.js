@@ -33,6 +33,7 @@ function useStateAndDispatch () {
 
 export default function Filter ({
   title,
+  extras,
   filters = [],
   onFilter,
   isLoading,
@@ -108,6 +109,13 @@ export default function Filter ({
           )}
         </Form>
       </Card>
+      {extras &&
+        <div className='row'>
+          <div className='col-md-12'>
+            {extras}
+          </div>
+        </div>
+      }
       {children && (
         <Card
           isLoading={isLoading}

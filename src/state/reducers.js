@@ -15,6 +15,7 @@ import cashierClosing from '../containers/cashierClosing/reducer'
 import emails from '../containers/emails/reducer'
 import tags from '../containers/tags/reducer'
 import payments from '../containers/payments/reducer'
+import whoWorked from '../containers/whoWorked/reducer'
 
 import { reducer as isLoading } from '../helpers/reducerPromiseHelper'
 
@@ -34,5 +35,6 @@ export default combineReducers({
   emails,
   tags,
   payments,
+  whoWorked,
   isLoading
 })

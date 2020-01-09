@@ -18,6 +18,8 @@ import UsersView from './containers/users/view'
 import Payments from './containers/payments'
 import PaymentsSave from './containers/payments/save'
 
+import WhoWorked from './containers/whoWorked'
+
 import Emails from './containers/emails'
 import EmailsSave from './containers/emails/save'
 
@@ -43,6 +45,7 @@ export const routes = [
   // { path: '/events/:uuid/pos/:uuidDevice', exact: true, component: DevicesSave },
   { path: '/users', name: 'Usuários', icon: 'circle-08 text-purple', exact: true, menu: true, component: Users },
   { path: '/users/:uuid', exact: true, component: UsersView },
+  { path: '/whoworked', name: 'Relatório Mensal', icon: 'chart-bar-32 text-red', exact: true, menu: true, component: WhoWorked },
   { path: '/payments', name: 'Efetuar Pagamentos', icon: 'money-coins text-green', exact: true, menu: true, component: Payments },
   { path: '/payments/:idPayment', exact: true, component: PaymentsSave },
   { path: '/emails', name: 'Emails', icon: 'email-83 text-blue', exact: true, menu: true, component: Emails },
