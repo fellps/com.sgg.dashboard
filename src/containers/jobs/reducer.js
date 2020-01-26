@@ -5,9 +5,11 @@ import {
   get,
   getOne,
   getAvailableUsers,
+  getInvitationStatistics,
   save,
   sendPush,
-  clearJob
+  clearJob,
+  clearStatistics
 } from './actions'
 
 import moment from 'moment'
@@ -27,6 +29,8 @@ const initialState = {
 
   availableUsers: 0,
 
+  statistics: [],
+
   push: {},
 
   response: { status: null }
@@ -36,6 +40,12 @@ export default createReducer({
   [clearJob]: state => ({
     ...state,
     job: { ...initialState.job },
+    response: { ...initialState.response }
+  }),
+
+  [clearStatistics]: state => ({
+    ...state,
+    statistics: initialState.statistics,
     response: { ...initialState.response }
   }),
 
@@ -61,6 +71,11 @@ export default createReducer({
   [fulfilled(getAvailableUsers)]: (state, payload) => ({
     ...state,
     availableUsers: payload.data.data
+  }),
+
+  [fulfilled(getInvitationStatistics)]: (state, payload) => ({
+    ...state,
+    statistics: payload.data.data
   }),
 
   [fulfilled(get)]: (state, payload) => ({

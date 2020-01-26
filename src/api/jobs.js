@@ -9,12 +9,24 @@ export const get = async ({ idEvent, idJob, ...restParams } = {}) => {
   })
 }
 
+export const getInvitationStatistics = async ({ ...restData } = {}) => {
+  const { token } = loggedUser()
+
+  const formData = toFormData(restData)
+
+  return request.post(`/invitationStatistics`, formData, {
+    headers: {
+      'x-access-token': token
+    }
+  })
+}
+
 export const getAvailableUsers = async ({ ...restData } = {}) => {
   const { token } = loggedUser()
 
   const formData = toFormData(restData)
 
-  return request.post(`/availableusers`, formData, {
+  return request.post(`/availableUsers`, formData, {
     headers: {
       'x-access-token': token
     }
