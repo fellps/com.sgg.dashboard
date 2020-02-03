@@ -32,6 +32,15 @@ export const save = async ({ IdUser, ...restData }) => {
   })
 }
 
+export const manualCheckout = async ({ checkout, qrCode }) => {
+  const { Event, UserPassword } = checkout
+
+  const { token } = loggedUser()
+  return request.post(`/manualCheckout`, qs.stringify({ IdEvent: Event, QrCode: qrCode, UserPassword }), {
+    headers: { 'x-access-token': token }
+  })
+}
+
 export const getCashiers = async ({ uuid: eventId, ...restParams } = {}) => {
   const { token } = loggedUser()
   return request.get(`/users/cashiers/${eventId || ''}`, {

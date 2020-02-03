@@ -17,9 +17,9 @@ export const getOne = async ({ IdPayment, ...restParams } = {}) => {
   })
 }
 
-export const save = async ({ rows }) => {
+export const save = async ({ rows, paymentType }) => {
   const { token } = loggedUser()
-  return request.post(`/payments/`, qs.stringify(rows), {
+  return request.post(`/payments/`, qs.stringify({ rows: rows.rows, paymentType: paymentType.PaymentType }), {
     headers: { 'x-access-token': token }
   })
 }

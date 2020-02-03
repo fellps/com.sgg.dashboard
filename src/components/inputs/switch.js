@@ -30,7 +30,9 @@ export class SwitchInputComponent extends Component {
       value,
       error,
       label,
-      info
+      info,
+      disabledText,
+      enabledText
     } = this.props
 
     return (
@@ -38,14 +40,14 @@ export class SwitchInputComponent extends Component {
         {label && <Form.Label>{label}</Form.Label>}
         <div>
           <div style={{ display: 'flex', alignItems: 'center', color: 'rgba(0,0,0,0.3)' }}>
-            Inativo
+            { disabledText || 'Inativo' }
             <div style={{ marginLeft: 5, marginRight: 5, marginBottom: -5 }}>
               <Switch
                 onChange={onChangeText}
                 checked={!!value}
               />
             </div>
-            Ativo
+            { enabledText || 'Ativo' }
           </div>
         </div>
         {info && <Form.Text className='text-muted'>{info}</Form.Text>}

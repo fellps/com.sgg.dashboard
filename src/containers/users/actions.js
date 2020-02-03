@@ -6,6 +6,8 @@ export const get = createAction('GET_USERS', users.get)
 export const getOne = createAction('GET_USER', users.getOne)
 export const getUserStatus = createAction('GET_USER_STATUS', users.getUserStatus)
 export const save = createAction('SAVE_USER', users.save)
+export const manualCheckout = createAction('USER_MANUAL_CHECKOUT', users.manualCheckout)
 
 export const clearUser = createAction('CLEAR_USER')
 export const set = createAction('SET_USER')
+export const setCheckout = createAction('SET_USER_CHECKOUT')

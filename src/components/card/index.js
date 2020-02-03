@@ -4,7 +4,7 @@ import {
   Card as CardRB,
   Row,
   Col
-} from  'react-bootstrap'
+} from 'react-bootstrap'
 
 import ReactLoading from 'react-loading'
 

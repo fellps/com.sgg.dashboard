@@ -30,6 +30,11 @@ const columns = [
     title: 'Evento'
   },
   {
+    dataIndex: 'Cargo',
+    key: 'Cargo',
+    title: 'Cargo'
+  },
+  {
     dataIndex: 'Email',
     key: 'Email',
     title: 'Email'
@@ -77,7 +82,7 @@ export default function WhoWorked ({ location, history }) {
   const fileExtension = '.xlsx'
 
   const exportToCSV = (csvData, fileName) => {
-    const ws = XLSX.utils.json_to_sheet(csvData, { header: ['Nome', 'Evento', 'Email', 'Telefone'] })
+    const ws = XLSX.utils.json_to_sheet(csvData, { header: ['Nome', 'Evento', 'Cargo', 'Email', 'Telefone'] })
     const wb = { Sheets: { data: ws }, SheetNames: ['data'] }
     const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
     const data = new Blob([excelBuffer], { type: fileType })

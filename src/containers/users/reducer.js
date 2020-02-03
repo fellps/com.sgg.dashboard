@@ -1,7 +1,7 @@
 
 import { createReducer } from 'redux-act'
 
-import { get, getOne, getUserStatus, clearUser, set, save } from './actions'
+import { get, getOne, getUserStatus, clearUser, set, setCheckout, save } from './actions'
 
 import {
   fulfilled,
@@ -18,6 +18,8 @@ const initialState = {
     Documents: [],
     Payments: []
   },
+
+  checkout: {},
 
   userStatus: [],
 
@@ -63,6 +65,14 @@ export default createReducer({
     ...state,
     user: {
       ...state.user,
+      ...payload
+    }
+  }),
+
+  [setCheckout]: (state, payload) => ({
+    ...state,
+    checkout: {
+      ...state.checkout,
       ...payload
     }
   }),

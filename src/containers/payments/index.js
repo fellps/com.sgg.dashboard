@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Modal } from 'react-bootstrap'
 import LoadingScreen from 'react-loading-screen'
 import { Link } from 'react-router-dom'
+import Form from 'react-nonconformist'
+import NumberFormat from 'react-number-format'
 
 import Dashboard from '../dashboard'
 import Filters from '../filters'
@@ -10,33 +12,11 @@ import toParams from '../filters/toParams'
 
 import useMount from '../../helpers/useMount'
 
-import { get, save } from './actions'
+import { get, setPayment, save } from './actions'
 
 import Table from '../../components/tableSelect'
 import Button from '../../components/button'
-
-const columns = [
-  {
-    Header: 'Nome',
-    accessor: 'Name',
-    Cell: props => <Link to={`/users/${props.original.IdUser}`}>{props.value}</Link>
-  },
-  {
-    Header: 'CPF',
-    accessor: 'Document',
-    Cell: props => <span className='number'>{props.value}</span>
-  },
-  {
-    Header: 'Cargo',
-    accessor: 'JobName',
-    Cell: props => <span className='number'>{props.value}</span>
-  },
-  {
-    Header: 'Valor',
-    accessor: 'Amount',
-    Cell: props => <span className='number'>R$ {props.value.toFixed(2)}</span>
-  }
-]
+import InputPaymentType from '../../components/inputs/paymentType'
 
 function useStateAndDispatch () {
   const dispatch = useDispatch()
@@ -47,15 +27,90 @@ function useStateAndDispatch () {
     payments,
     get: params => dispatch(get(params)),
     save: params => dispatch(save(params)),
+    setPayment: params => dispatch(setPayment(params)),
     isLoading
   }
 }
 
 export default function Payments ({ history, location }) {
-  const { get, save, isLoading, payments } = useStateAndDispatch()
+  const { get, save, isLoading, payments, setPayment } = useStateAndDispatch()
   const [rows, setRows] = useState({ rows: [] })
+  const [paymentType, setPaymentType] = useState({})
   const [showModal, setShowModal] = useState(false)
   const [showLoading, setShowLoading] = useState(false)
+
+  const currencyFormatter = (value) => {
+    if (!Number(value)) return ''
+
+    const amount = new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL'
+    }).format(value / 100)
+
+    return `${amount}`
+  }
+
+  const handleInputChange = (cellInfo, event) => {
+    const newPayments = [...payments.data]
+    let value = 0
+    try {
+      value = parseFloat(parseFloat(event.floatValue) / 100)
+    } catch (err) {}
+    newPayments[cellInfo.index][cellInfo.column.id] = value
+    setPayment(newPayments)
+  }
+
+  const renderEditable = cellInfo => {
+    const value = payments.data[cellInfo.index][cellInfo.column.id]
+
+    return (
+      <NumberFormat
+        decimalScale={2}
+        decimalSeparator=','
+        fixedDecimalScale
+        onValueChange={(e) => handleInputChange(cellInfo, e)}
+        placeholder='R$ 0,00'
+        prefix='R$ '
+        thousandSeparator='.'
+        value={value * 100}
+        format={currencyFormatter}
+        className={'form-control'}
+      />
+    )
+  }
+
+  const columns = [
+    {
+      Header: 'Nome',
+      accessor: 'Name',
+      Cell: props => <Link to={`/users/${props.original.IdUser}`}>{props.value}</Link>
+    },
+    {
+      Header: 'CPF',
+      accessor: 'Document',
+      Cell: props => <span className='number'>{props.value}</span>
+    },
+    {
+      Header: 'Email',
+      accessor: 'Email',
+      Cell: props => <span>{props.value}</span>
+    },
+    {
+      Header: 'Evento',
+      accessor: 'EventName',
+      Cell: props => <span>{props.value}</span>
+    },
+    {
+      Header: 'Cargo',
+      accessor: 'JobName',
+      Cell: props => <span className='number'>{props.value}</span>
+    },
+    {
+      Header: 'Valor',
+      accessor: 'Amount',
+      Cell: props => renderEditable(props)
+    }
+  ]
 
   useMount(() => {
     const pairs = location.search.slice(1).split('&')
@@ -78,7 +133,7 @@ export default function Payments ({ history, location }) {
   const submit = async () => {
     setShowModal(false)
     setShowLoading(true)
-    await save(rows)
+    await save({ rows, paymentType })
     setRows({ rows: [] })
     window.location.reload()
   }
@@ -128,23 +183,33 @@ export default function Payments ({ history, location }) {
             keyField='IdUserJob'
           />
         </Filters>
-        <Modal show={showModal}>
+        <Modal show={showModal} centered>
           <Modal.Header closeButton>
             <Modal.Title>Efetuar pagamentos</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Deseja realmente efetuar estes pagamentos?
-            <br />
-            <h3>Valor total: R$ {rows.rows.reduce((prev, row) => (prev + row.Amount), 0).toFixed(2)}</h3>
+            <Form
+              values={paymentType}
+              onChange={setPaymentType}
+              onSubmit={submit}
+            >
+              {(connect, submit) => (
+                <form onSubmit={e => {
+                  e.preventDefault()
+                  submit()
+                }}>
+                  <InputPaymentType {...connect('PaymentType')} label='Forma de pagamento' required />
+                  <span>Valor total:</span> <h2>R$ {rows.rows.reduce((prev, row) => (prev + row.Amount), 0).toFixed(2)}</h2>
+                  <div style={{ textAlign: 'right', marginTop: 45 }}>
+                    <Button variant='primary' type='submit'>Confirmar</Button>
+                    <Button variant='secondary' onClick={() => setShowModal(false)}>
+                      Cancelar
+                    </Button>
+                  </div>
+                </form>
+              )}
+            </Form>
           </Modal.Body>
-          <Modal.Footer>
-            <Button variant='primary' onClick={submit}>
-              Confirmar
-            </Button>
-            <Button variant='secondary' onClick={() => setShowModal(false)}>
-              Cancelar
-            </Button>
-          </Modal.Footer>
         </Modal>
       </Dashboard>
     </LoadingScreen>

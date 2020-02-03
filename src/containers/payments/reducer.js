@@ -1,7 +1,7 @@
 
 import { createReducer } from 'redux-act'
 
-import { get, getOne, clearPayment, set, save } from './actions'
+import { get, getOne, clearPayment, set, save, setPayment } from './actions'
 
 import {
   fulfilled,
@@ -52,6 +52,13 @@ export default createReducer({
     payment: {
       ...state.payment,
       ...payload
+    }
+  }),
+
+  [setPayment]: (state, payload) => ({
+    ...state,
+    payments: {
+      data: payload
     }
   }),
 
