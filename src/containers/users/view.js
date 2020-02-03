@@ -131,6 +131,7 @@ export default function UserView ({ history, match }) {
   useMount(() => {
     getOne({ _id: match.params.uuid })
     getUserStatus()
+    console.log(user)
     return clearUser
   })
 
@@ -183,6 +184,7 @@ export default function UserView ({ history, match }) {
             <Tabs>
               <TabList>
                 <Tab>Dados pessoais</Tab>
+                <Tab>Mídias</Tab>
                 <Tab>Documentos</Tab>
                 <Tab>Histórico de Pagamentos</Tab>
                 <Tab>Checkout manual</Tab>
@@ -223,6 +225,27 @@ export default function UserView ({ history, match }) {
                     </form>
                   )}
                 </Form>
+              </TabPanel>
+              <TabPanel>
+                {user.ProfileImages.length > 0
+                  ? <div>
+                    <Gallery photos={user.ProfileImages.map(document => ({ src: document.Url, width: 1.75, height: 1 }))} onClick={openLightbox} direction='column' columns={3} />
+                    <ModalGateway>
+                      {viewerIsOpen ? (
+                        <Modal onClose={closeLightbox}>
+                          <Carousel
+                            currentIndex={currentImage}
+                            views={user.ProfileImages.map(document => ({ src: document.Url, width: 1.75, height: 1 })).map(x => ({
+                              ...x,
+                              srcset: x.srcSet,
+                              caption: x.title
+                            }))}
+                          />
+                        </Modal>
+                      ) : null}
+                    </ModalGateway>
+                  </div>
+                  : <p>Nenhuma mídia para exibir!</p>}
               </TabPanel>
               <TabPanel>
                 {user.Documents.length > 0

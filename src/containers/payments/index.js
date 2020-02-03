@@ -62,9 +62,11 @@ export default function Payments ({ history, location }) {
 
   const renderEditable = cellInfo => {
     const value = payments.data[cellInfo.index][cellInfo.column.id]
+    const isPaid = payments.data[cellInfo.index]['IdPayment']
 
     return (
       <NumberFormat
+        style={{ width: 150, height: 35 }}
         decimalScale={2}
         decimalSeparator=','
         fixedDecimalScale
@@ -75,6 +77,7 @@ export default function Payments ({ history, location }) {
         value={value * 100}
         format={currencyFormatter}
         className={'form-control'}
+        disabled={isPaid !== null}
       />
     )
   }

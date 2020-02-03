@@ -16,6 +16,7 @@ const initialState = {
 
   user: {
     Documents: [],
+    ProfileImages: [],
     Payments: []
   },
 
